@@ -13,17 +13,17 @@ spec:
         app: postgre
     spec:
       containers:
-      - name: postgre
-        image: postgres:13.16
-        ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_USER
-          value: fake-shop
-        - name: POSTGRES_PASSWORD
-          value: Pg1234
-        - name: POSTGRES_DB
-          value: fake-shop
+        - name: postgre
+          image: postgres:13.16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: fake-shop
+            - name: POSTGRES_PASSWORD
+              value: Pg1234
+            - name: POSTGRES_DB
+              value: fake-shop
 ---
 apiVersion: v1
 kind: Service
@@ -33,9 +33,9 @@ spec:
   selector:
     app: postgre
   ports:
-  - protocol: TCP
-    port: 5432
-    targetPort: 5432
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
 ---
 # Deployment da Aplicação Web
 apiVersion: apps/v1
@@ -53,21 +53,21 @@ spec:
         app: fakeshop
     spec:
       containers:
-      - name: fakeshop
-        image: fabioaragao/fake-shop:v2
-        ports:
-        - containerPort: 5000
-        env:
-        - name: DB_HOST
-          value: postgre
-        - name: SB_USER
-          value: fakeshop
-        - name: DB_PASSWORD
-          value: Pg1234
-        - name: DB_NAME
-          value: fakeshop
-        - name: FLASK_APP
-          value: index.py  
+        - name: fakeshop
+          image: fabioaragao/fake-shop:v1
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              value: postgre
+            - name: SB_USER
+              value: fakeshop
+            - name: DB_PASSWORD
+              value: Pg1234
+            - name: DB_NAME
+              value: fakeshop
+            - name: FLASK_APP
+              value: index.py
 ---
 apiVersion: v1
 kind: Service
@@ -77,7 +77,7 @@ spec:
   selector:
     app: fakeshop
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
   type: LoadBalancer
