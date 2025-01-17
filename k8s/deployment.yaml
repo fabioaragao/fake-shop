@@ -30,19 +30,20 @@ kind: Service
 metadata:
   name: postgre
 spec:
-selector:
-  app: postgre
-ports:
+  selector:
+    app: postgre
+  ports:
   - protocol: TCP
     port: 5432
     targetPort: 5432
 ---
 # Deployment da Aplicação Web
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fakeshop
 spec:
+  replicas: 4
   selector:
     matchLabels:
       app: fakeshop
@@ -53,7 +54,7 @@ spec:
     spec:
       containers:
       - name: fakeshop
-        image: fabioaragao/fake-shop:v1
+        image: fabioaragao/fake-shop:v2
         ports:
         - containerPort: 5000
         env:
@@ -73,10 +74,10 @@ kind: Service
 metadata:
   name: fakeshop
 spec:
-selector:
-  app: fakeshop
-ports:
+  selector:
+    app: fakeshop
+  ports:
   - protocol: TCP
     port: 80
     targetPort: 5000
-type: LoadBalancer  
+  type: LoadBalancer
